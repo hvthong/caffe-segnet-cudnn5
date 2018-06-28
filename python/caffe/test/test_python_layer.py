@@ -151,6 +151,8 @@ class TestPythonLayer(unittest.TestCase):
         self.assertEqual(layer.blobs[0].data[0], -1)
         net.copy_from(caffemodel_file)
         self.assertEqual(layer.blobs[0].data[0], 1)
+        if os.name == 'nt':
+            os.close(h)
         os.remove(caffemodel_file)
         
         # Test weight sharing

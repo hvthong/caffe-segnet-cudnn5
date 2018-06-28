@@ -55,20 +55,57 @@ function(caffe_generate_export_configs)
     set(HAVE_CUDA FALSE)
     list(APPEND Caffe_DEFINITIONS -DCPU_ONLY)
   endif()
+  set(GFLAGS_IMPORTED OFF)
+  foreach(_lib ${GFLAGS_LIBRARIES})
+    if(TARGET ${_lib})
+      set(GFLAGS_IMPORTED ON)
+    endif()
+  endforeach()
 
+  set(GLOG_IMPORTED OFF)
+  foreach(_lib ${GLOG_LIBRARIES})
+    if(TARGET ${_lib})
+      set(GLOG_IMPORTED ON)
+    endif()
+  endforeach()
+
+  set(HDF5_IMPORTED OFF)
+  foreach(_lib ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
+    if(TARGET ${_lib})
+      set(HDF5_IMPORTED ON)
+	endif()
+  endforeach()
   if(USE_OPENCV)
     list(APPEND Caffe_DEFINITIONS -DUSE_OPENCV)
   endif()
 
+  set(LMDB_IMPORTED OFF)
   if(USE_LMDB)
-    list(APPEND Caffe_DEFINITIONS -DUSE_LMDB)
-    if (ALLOW_LMDB_NOLOCK)
-        list(APPEND Caffe_DEFINITIONS -DALLOW_LMDB_NOLOCK)
-    endif()
+	foreach(_lib ${LMDB_LIBRARIES})
+      if(TARGET ${_lib})
+        set(LMDB_IMPORTED ON)
+      endif()
+    endforeach()
+    #list(APPEND Caffe_DEFINITIONS -DUSE_LMDB)
+    #if (ALLOW_LMDB_NOLOCK)
+    #    list(APPEND Caffe_DEFINITIONS -DALLOW_LMDB_NOLOCK)
+    #endif()
   endif()
+  set(LEVELDB_IMPORTED OFF)
+  set(SNAPPY_IMPORTED OFF)
 
   if(USE_LEVELDB)
-    list(APPEND Caffe_DEFINITIONS -DUSE_LEVELDB)
+	foreach(_lib ${LevelDB_LIBRARIES})
+      if(TARGET ${_lib})
+        set(LEVELDB_IMPORTED ON)
+      endif()
+    endforeach()
+    foreach(_lib ${Snappy_LIBRARIES})
+      if(TARGET ${_lib})
+        set(SNAPPY_IMPORTED ON)
+      endif()
+    endforeach()
+    #list(APPEND Caffe_DEFINITIONS -DUSE_LEVELDB)
   endif()
 
   if(NOT HAVE_CUDNN)
@@ -77,9 +114,9 @@ function(caffe_generate_export_configs)
     list(APPEND DEFINITIONS -DUSE_CUDNN)
   endif()
 
-  if(BLAS STREQUAL "MKL" OR BLAS STREQUAL "mkl")
-    list(APPEND Caffe_DEFINITIONS -DUSE_MKL)
-  endif()
+  #if(BLAS STREQUAL "MKL" OR BLAS STREQUAL "mkl")
+  #  list(APPEND Caffe_DEFINITIONS -DUSE_MKL)
+  #endif()
 
   configure_file("cmake/Templates/CaffeConfig.cmake.in" "${PROJECT_BINARY_DIR}/CaffeConfig.cmake" @ONLY)
 
@@ -90,16 +127,16 @@ function(caffe_generate_export_configs)
   # ---[ Configure install-tree CaffeConfig.cmake file ]---
 
   # remove source and build dir includes
-  caffe_get_items_with_prefix(${PROJECT_SOURCE_DIR} Caffe_INCLUDE_DIRS __insource)
-  caffe_get_items_with_prefix(${PROJECT_BINARY_DIR} Caffe_INCLUDE_DIRS __inbinary)
-  list(REMOVE_ITEM Caffe_INCLUDE_DIRS ${__insource} ${__inbinary})
+  #caffe_get_items_with_prefix(${PROJECT_SOURCE_DIR} Caffe_INCLUDE_DIRS __insource)
+  #caffe_get_items_with_prefix(${PROJECT_BINARY_DIR} Caffe_INCLUDE_DIRS __inbinary)
+  #list(REMOVE_ITEM Caffe_INCLUDE_DIRS ${__insource} ${__inbinary})
 
   # add `install` include folder
-  set(lines
-     "get_filename_component(__caffe_include \"\${Caffe_CMAKE_DIR}/../../include\" ABSOLUTE)\n"
-     "list(APPEND Caffe_INCLUDE_DIRS \${__caffe_include})\n"
-     "unset(__caffe_include)\n")
-  string(REPLACE ";" "" Caffe_INSTALL_INCLUDE_DIR_APPEND_COMMAND ${lines})
+  #set(lines
+  #   "get_filename_component(__caffe_include \"\${Caffe_CMAKE_DIR}/../../include\" ABSOLUTE)\n"
+  #   "list(APPEND Caffe_INCLUDE_DIRS \${__caffe_include})\n"
+  #   "unset(__caffe_include)\n")
+  #string(REPLACE ";" "" Caffe_INSTALL_INCLUDE_DIR_APPEND_COMMAND ${lines})
 
   configure_file("cmake/Templates/CaffeConfig.cmake.in" "${PROJECT_BINARY_DIR}/cmake/CaffeConfig.cmake" @ONLY)
 
