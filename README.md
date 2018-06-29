@@ -36,6 +36,9 @@ Vijay Badrinarayanan, Alex Kendall and Roberto Cipolla "SegNet: A Deep Convoluti
 1. Requirement: MSVC 2015, CUDA 8.0, cuDNN 5.1 and OpenCV 3, Anaconda3 with Python 3.5
 2. Build: Run scripts\build_win.cmd
 
+## Example:
+https://github.com/alexgkendall/SegNet-Tutorial
+
 ## License
 
 This extension to the Caffe library is released under a creative commons license which allows for personal and research use only. For a commercial license please contact the authors. You can view a license summary here:
