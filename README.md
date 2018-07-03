@@ -33,7 +33,7 @@ http://arxiv.org/abs/1511.00561
 Vijay Badrinarayanan, Alex Kendall and Roberto Cipolla "SegNet: A Deep Convolutional Encoder-Decoder Architecture for Image Segmentation." arXiv preprint arXiv:1511.00561, 2015. 
 
 ## Compile on Windows:
-1. Requirement: MSVC 2015, CUDA 8.0, cuDNN 5.1 and OpenCV 3, Anaconda3 with Python 3.5
+1. Requirement: MSVC 2015, CUDA 8.0, cuDNN 5.1 and OpenCV 3, Anaconda3 with Python 3.5 (Tested)
 2. Build: Run scripts\build_win.cmd
 
 ## Example:
