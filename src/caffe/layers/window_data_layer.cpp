@@ -14,7 +14,8 @@
 
 #include "caffe/data_transformer.hpp"
 #include "caffe/internal_thread.hpp"
-#include "caffe/layers/base_data_layer.hpp"
+//#include "caffe/layers/base_data_layer.hpp"
+#include "caffe/data_layers.hpp"
 #include "caffe/layers/window_data_layer.hpp"
 #include "caffe/util/benchmark.hpp"
 #include "caffe/util/io.hpp"

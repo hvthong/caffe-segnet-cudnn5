@@ -132,6 +132,8 @@ class SolverRegisterer {
   }                                                                            \
   REGISTER_SOLVER_CREATOR(type, Creator_##type##Solver)
 
+//INSTANTIATE_CLASS(SolverRegistry);
+//INSTANTIATE_CLASS(SolverRegisterer);
 }  // namespace caffe
 
 #endif  // CAFFE_SOLVER_FACTORY_H_

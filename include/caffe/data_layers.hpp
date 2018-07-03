@@ -16,6 +16,7 @@
 #include "caffe/layer.hpp"
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/db.hpp"
+#include "caffe/util/blocking_queue.hpp"
 
 namespace caffe {
 
@@ -52,6 +53,12 @@ class BaseDataLayer : public Layer<Dtype> {
 };
 
 template <typename Dtype>
+class Batch {
+ public:
+  Blob<Dtype> data_, label_;
+};
+
+template <typename Dtype>
 class BasePrefetchingDataLayer :
     public BaseDataLayer<Dtype>, public InternalThread {
  public:
@@ -70,13 +77,22 @@ class BasePrefetchingDataLayer :
 
   virtual void CreatePrefetchThread();
   virtual void JoinPrefetchThread();
+  
+  // Prefetches batches (asynchronously if to GPU memory)
+  static const int PREFETCH_COUNT = 3;
+  
   // The thread's function
   virtual void InternalThreadEntry() {}
+  virtual void load_batch(Batch<Dtype>* batch) {};
 
  protected:
   Blob<Dtype> prefetch_data_;
   Blob<Dtype> prefetch_label_;
   Blob<Dtype> transformed_data_;
+  
+  Batch<Dtype> prefetch_[PREFETCH_COUNT];
+  BlockingQueue<Batch<Dtype>*> prefetch_free_;
+  BlockingQueue<Batch<Dtype>*> prefetch_full_;
 };
 
 

@@ -33,6 +33,8 @@
 
 namespace caffe {
 
+INSTANTIATE_CLASS(LayerRegistry);
+INSTANTIATE_CLASS(LayerRegisterer);
 // Get convolution layer according to engine.
 template <typename Dtype>
 shared_ptr<Layer<Dtype> > GetConvolutionLayer(
